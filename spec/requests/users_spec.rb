@@ -1,4 +1,4 @@
-RSpec.describe 'UserAPI', type: :request do
+RSpec.describe 'Users API', type: :request do
   let!(:users) { create_list(:user, 20) }
   let(:user_id) { users.first.id }
 
@@ -30,7 +30,8 @@ RSpec.describe 'UserAPI', type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:user_id) { 1000 }
+      let(:user_id) { 0 }
+
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
       end
