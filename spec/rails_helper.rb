@@ -14,6 +14,8 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
   config.infer_spec_type_from_file_location!
@@ -31,4 +33,6 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  config.include RequestSpecHelper, type: :request
 end
