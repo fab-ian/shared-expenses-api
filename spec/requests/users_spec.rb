@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe 'Users API', type: :request do
   let!(:users) { create_list(:user, 20) }
   let(:user_id) { users.first.id }
@@ -43,7 +45,7 @@ RSpec.describe 'Users API', type: :request do
   end
 
   describe 'POST /users' do
-    let(:valid_attributes) { { name: 'Fabian' } }
+    let(:valid_attributes) { { name: 'Fabian', email: 'test@test.pl', password: '123456' } }
 
     context 'when the request is valid' do
       before { post '/users', params: valid_attributes }
@@ -66,7 +68,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Name can't be blank/)
+          .to match(/Name can't be blank/)
       end
     end
   end
