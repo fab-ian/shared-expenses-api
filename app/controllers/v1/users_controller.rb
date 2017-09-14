@@ -4,7 +4,7 @@ module V1
     before_action :set_user, only: %i[show update destroy]
 
     def index
-      @users = User.all
+      @users = User.page(params[:page])
       json_response(@users)
     end
 

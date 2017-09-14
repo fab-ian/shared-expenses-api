@@ -4,7 +4,7 @@ module V1
     before_action :set_item, only: %i[show update destroy]
 
     def index
-      @items = @user.items
+      @items = @user.items.page(params[:page])
       json_response(@items)
     end
 
