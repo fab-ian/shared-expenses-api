@@ -18,3 +18,4 @@
 .env
 /config/deploy/*
 /config/deploy.rb
+/config/secrets.yml
