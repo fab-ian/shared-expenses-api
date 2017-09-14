@@ -14,3 +14,7 @@
 !/tmp/.keep
 
 .byebug_history
+/config/database.yml
+.env
+/config/deploy/*
+/config/deploy.rb

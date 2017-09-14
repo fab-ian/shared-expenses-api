@@ -10,10 +10,12 @@ gem 'rails', '~> 5.1.4'
 gem 'active_model_serializers'
 gem 'awesome_print'
 gem 'bcrypt'
+gem 'dotenv'
 gem 'jwt'
 gem 'kaminari'
 gem 'pg'
 gem 'puma', '~> 3.7'
+gem 'rollbar'
 
 group :development, :test do
   gem 'pry-byebug'
@@ -28,6 +30,14 @@ group :test do
 end
 
 group :development do
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-dotenv-tasks', require: false
+  gem 'capistrano-passenger'
+  gem 'capistrano-rails'
+  gem 'capistrano-rvm'
+  gem 'capistrano-scm-gitcopy'
+
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
