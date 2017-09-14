@@ -11,7 +11,8 @@ gem 'active_model_serializers'
 gem 'awesome_print'
 gem 'bcrypt'
 gem 'jwt'
-gem 'pg', '~> 0.18'
+gem 'kaminari'
+gem 'pg'
 gem 'puma', '~> 3.7'
 
 group :development, :test do
