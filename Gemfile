@@ -7,6 +7,7 @@ end
 
 gem 'rails', '~> 5.1.4'
 
+gem 'active_model_serializers'
 gem 'awesome_print'
 gem 'bcrypt'
 gem 'jwt'
