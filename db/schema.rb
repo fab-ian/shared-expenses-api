@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170912181237) do
+ActiveRecord::Schema.define(version: 20170915081302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "item_users", force: :cascade do |t|
+    t.bigint "item_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_users_on_item_id"
+    t.index ["user_id"], name: "index_item_users_on_user_id"
+  end
 
   create_table "items", force: :cascade do |t|
     t.string "name"
@@ -32,5 +41,7 @@ ActiveRecord::Schema.define(version: 20170912181237) do
     t.string "password_digest"
   end
 
+  add_foreign_key "item_users", "items"
+  add_foreign_key "item_users", "users"
   add_foreign_key "items", "users"
 end
