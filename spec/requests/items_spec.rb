@@ -33,10 +33,10 @@ RSpec.describe 'Items API', type: :request do
     end
   end
 
-  describe 'GET /users/:user_id/items/:id' do
-    before { get "/users/#{user_id}/items/#{id}", params: {}, headers: headers }
+  describe 'GET /items/:id' do
+    before { get "/items/#{id}", params: {}, headers: headers }
 
-    context 'when user item exist' do
+    context 'when item exist' do
       it 'return status code 200' do
         expect(response).to have_http_status(200)
       end
@@ -46,7 +46,7 @@ RSpec.describe 'Items API', type: :request do
       end
     end
 
-    context 'when user item does not exist' do
+    context 'when item does not exist' do
       let(:id) { 0 }
 
       it 'return status code 404' do
@@ -83,9 +83,9 @@ RSpec.describe 'Items API', type: :request do
     end
   end
 
-  describe 'PUT /users/:user_id/items/:id' do
+  describe 'PUT /items/:id' do
     let(:valid_attributes) { { name: 'valid name', description: 'valid description' }.to_json }
-    before { put "/users/#{user_id}/items/#{id}", params: valid_attributes, headers: headers }
+    before { put "/items/#{id}", params: valid_attributes, headers: headers }
 
     context 'when item exist' do
       it 'returns status code 204' do
@@ -111,8 +111,8 @@ RSpec.describe 'Items API', type: :request do
     end
   end
 
-  describe 'DELETE /users/:user_id/items/:id' do
-    before { delete "/users/#{user_id}/items/#{id}", params: {}, headers: headers }
+  describe 'DELETE /items/:id' do
+    before { delete "/items/#{id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

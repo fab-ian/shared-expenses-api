@@ -4,8 +4,15 @@ Rails.application.routes.draw do
   end
 
   scope module: :v1, constraints: ApiVersion.new('v1', true) do
+    resources :items, except: %i(index create)
+
+    # 'item_users' resources
+    resources :item_users, only: :destroy
+    post 'users/:user_id/items/:item_id/item_users', to: 'item_users#create'
+    get 'items/:item_id/item_users', to: 'item_users#index'
+
     resources :users do
-      resources :items
+      resources :items, only: %i(index create)
     end
 
     post 'signup', to: 'users#create'
