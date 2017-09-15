@@ -1,6 +1,6 @@
 module V1
   class ItemsController < ApplicationController
-    before_action :set_user, except: %i[new edit]
+    before_action :set_user, only: %i[index create]
     before_action :set_item, only: %i[show update destroy]
 
     def index
@@ -38,7 +38,7 @@ module V1
     end
 
     def set_item
-      @item = @user.items.find(params[:id]) if @user
+      @item = Item.find(params[:id])
     end
   end
 end
