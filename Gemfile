@@ -15,6 +15,7 @@ gem 'jwt'
 gem 'kaminari'
 gem 'pg'
 gem 'puma', '~> 3.7'
+gem 'rack-cors'
 gem 'rollbar'
 
 group :development, :test do
