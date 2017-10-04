@@ -33,6 +33,16 @@ RSpec.describe 'Items API', type: :request do
     end
   end
 
+  describe 'GET /users/items' do
+    before { get '/users/items', params: {}, headers: headers}
+
+    context('when current_user exist') do
+      it 'returns all users items' do
+        expect(json.size).to eq(20)
+      end
+    end
+  end
+
   describe 'GET /items/:id' do
     before { get "/items/#{id}", params: {}, headers: headers }
 
@@ -81,6 +91,30 @@ RSpec.describe 'Items API', type: :request do
         expect(response.body).to match(/Validation failed: Name can't be blank/)
       end
     end
+  end
+
+  describe 'POST /users/items' do
+    let(:valid_attributes) { {name: 'Item name', description: 'Description name'}.to_json }
+    
+    context 'when data are valid' do
+      before { post "/users/items", params: valid_attributes, headers: headers }
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when data are invalid' do
+      before { post '/users/items', params: {name: nil, description: 'description'}.to_json, headers: headers }
+
+      it 'returns code status 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'return an error message' do
+        expect(response.body).to match(/Validation failed: Name can't be blank/)
+      end
+    end    
   end
 
   describe 'PUT /items/:id' do

@@ -11,10 +11,12 @@ Rails.application.routes.draw do
     post 'users/:user_id/items/:item_id/item_users', to: 'item_users#create'
     get 'items/:item_id/item_users', to: 'item_users#index'
 
+    post 'users/items', to: 'items#create_with_current_user' 
+    get 'users/items', to: 'items#index_with_current_user'
     resources :users do
       resources :items, only: %i(index create)
     end
-
+    
     post 'signup', to: 'users#create'
   end
 

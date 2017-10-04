@@ -8,12 +8,22 @@ module V1
       json_response(@items)
     end
 
+    def index_with_current_user
+      @items = current_user.items.page(params[:page])
+      json_response(@items)
+    end
+
     def show
       json_response(@item)
     end
 
     def create
       @item = @user.items.create!(item_params)
+      json_response(@item, :created)
+    end
+
+    def create_with_current_user
+      @item = current_user.items.create!(item_params)
       json_response(@item, :created)
     end
 
