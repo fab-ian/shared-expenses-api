@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     end
     
     post 'signup', to: 'users#create'
+    
+    resources :payments, only: %i( create update destroy)
   end
 
   post 'auth/login', to: 'authentication#authenticate'
