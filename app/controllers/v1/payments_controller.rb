@@ -1,10 +1,11 @@
 module V1
   class PaymentsController < ApplicationController
     before_action :find_payment, only: %i(update destroy)
+    before_action :find_item, only: :create
 
     def create
-      @payment = Payment.create!(payment_params)
-      json_response(@payment, :created)      
+      Payment.create!(payment_params)
+      json_response(@item, :created)      
     end
 
     def update
@@ -20,11 +21,15 @@ module V1
     private
 
     def payment_params
-      params.permit(:name, :description, :item_id)
+      params.require(:payment).permit(:name, :description, :item_id)
     end
 
     def find_payment
       @payment = Payment.find(params[:id])
+    end
+
+    def find_item
+      @item = Item.find(params[:item_id])
     end
   end
 end
