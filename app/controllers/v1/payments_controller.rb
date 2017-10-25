@@ -21,7 +21,7 @@ module V1
     private
 
     def payment_params
-      params.require(:payment).permit(:name, :description, :item_id)
+      params.require(:payment).permit(:name, :description, :item_id, :amount)
     end
 
     def find_payment

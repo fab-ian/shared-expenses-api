@@ -8,7 +8,9 @@ RSpec.describe 'Payments API', types: :request do
 
   # add Payment
   describe 'POST /payments' do
-    let(:valid_data) { {name: 'Payment name', description: 'Payment description', item_id: item.id }.to_json }
+    let(:valid_data) do 
+       {name: 'Payment name', description: 'Payment description', item_id: item.id, amount: 50 }.to_json 
+    end
 
     context 'when valid data' do
       before { post '/payments', params: valid_data, headers: headers}
@@ -37,7 +39,9 @@ RSpec.describe 'Payments API', types: :request do
 
   #edit Payment
   describe 'PUT /paments/:payment_id' do
-    let(:valid_data) { { name:'edit data', description:'edit_description', item_id: item.id }.to_json }
+    let(:valid_data) do 
+      { name:'edit data', description:'edit_description', item_id: item.id, amount: 50 }.to_json 
+    end
 
     before do
       put "/payments/#{payment_id}",
