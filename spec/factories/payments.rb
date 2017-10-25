@@ -4,5 +4,6 @@ FactoryGirl.define do
     description { Faker::Lorem.sentence }
     amount { 100 }
     item
+    user
   end
 end

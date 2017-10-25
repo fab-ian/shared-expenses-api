@@ -9,7 +9,13 @@ RSpec.describe 'Payments API', types: :request do
   # add Payment
   describe 'POST /payments' do
     let(:valid_data) do 
-       {name: 'Payment name', description: 'Payment description', item_id: item.id, amount: 50 }.to_json 
+       {
+         name: 'Payment name',
+         description: 'Payment description',
+         amount: 50,
+         item_id: item.id,
+         user_id: user.id
+        }.to_json 
     end
 
     context 'when valid data' do
@@ -23,7 +29,7 @@ RSpec.describe 'Payments API', types: :request do
     context 'when invalid data' do
       before do
         post '/payments',
-        params: { name: nil, description: 'Payment description', item_id: item.id }.to_json,
+        params: { name: nil, description: 'Payment description', item_id: item.id, amount: 50 }.to_json,
         headers: headers
       end
 
@@ -32,7 +38,7 @@ RSpec.describe 'Payments API', types: :request do
       end
 
       it 'returns error message' do
-        expect(response.body).to match(/Validation failed: Name can't be blank/)
+        expect(response.body).to match(/Validation failed: User must exist, Name can't be blank/)
       end
     end
   end
@@ -40,7 +46,13 @@ RSpec.describe 'Payments API', types: :request do
   #edit Payment
   describe 'PUT /paments/:payment_id' do
     let(:valid_data) do 
-      { name:'edit data', description:'edit_description', item_id: item.id, amount: 50 }.to_json 
+      { 
+        name:'edit data',
+        description:'edit_description',
+        amount: 50,
+        item_id: item.id,
+        user_id: user.id
+      }.to_json 
     end
 
     before do
