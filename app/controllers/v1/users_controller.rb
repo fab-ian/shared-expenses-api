@@ -14,7 +14,8 @@ module V1
 
     def create
       user = User.create!(user_params)
-      auth_token = AuthenticateUser.new(user.email, user.password).call
+      credential = Credential.create!(credential_params.merge(user_id: user.id)) if user
+      auth_token = AuthenticateUser.new(credential.email, credential.password).call
       response = { message: Message.account_created, auth_token: auth_token }
       json_response(response, :created)
     end
@@ -36,7 +37,11 @@ module V1
     private
 
     def user_params
-      params.permit(:name, :email, :password, :password_confirmation)
+      params.permit(:name)
+    end
+
+    def credential_params
+      params.permit(:email, :password, :password_confirmation)
     end
 
     def set_user
