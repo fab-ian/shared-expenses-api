@@ -1,0 +1,2 @@
+class VirtualUser < User
+end
