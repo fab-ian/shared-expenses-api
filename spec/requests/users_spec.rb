@@ -75,16 +75,24 @@ RSpec.describe 'Users API', type: :request do
   describe 'POST /signup' do
     let(:headers) { valid_headers.except('Authorization') }
 
-    let(:valid_attributes) do
-      attributes_for(:credential, name: 'New Register User', password_confirmation: credential.password)
+    let(:valid_registered_user_attributes) do
+      attributes_for(
+        :credential, name: 'New Register User', password_confirmation: credential.password, type: 'RegisteredUser'
+      )
+    end
+
+    let(:valid_virtual_user_attributes) do
+      attributes_for(
+        :credential, name: 'New Virtual User', type: 'VirtualUser'
+      )
     end
 
     let(:invalid_attributes) do
-      attributes_for(:credential, name: nil, password_confirmation: credential.password)
+      attributes_for(:credential, name: nil, password_confirmation: credential.password, type: 'RegisteredUser')
     end
 
-    context 'when valid request' do
-      before { post '/signup', params: valid_attributes.to_json, headers: headers }
+    context 'when valid RegisteredUser request' do
+      before { post '/signup', params: valid_registered_user_attributes.to_json, headers: headers }
 
       it 'creates a new user' do
         expect(response).to have_http_status(201)
@@ -96,6 +104,18 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns an authentication token' do
         expect(json['auth_token']).not_to be_nil
+      end
+    end
+
+    context 'when valid VirtualUser request' do
+      before { post '/signup', params: valid_virtual_user_attributes.to_json, headers: headers }
+
+      it 'creates a new user' do
+        expect(response).to have_http_status(201)
+      end
+
+      it 'returns success message' do
+        expect(json['message']).to match(/Virtual User created/)
       end
     end
 
