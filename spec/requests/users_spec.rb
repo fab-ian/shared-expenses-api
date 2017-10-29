@@ -4,6 +4,7 @@ RSpec.describe 'Users API', type: :request do
   let!(:users) { create_list(:user, 20) }
   let(:user_id) { users.first.id }
   let(:user) { users.first }
+  let(:credential) { create(:credential, user_id: user_id)}
   let(:headers2) { valid_headers }
 
   describe 'GET /users' do
@@ -73,12 +74,25 @@ RSpec.describe 'Users API', type: :request do
   # User signup test suite
   describe 'POST /signup' do
     let(:headers) { valid_headers.except('Authorization') }
-    let(:valid_attributes) do
-      attributes_for(:user, password_confirmation: user.password)
+
+    let(:valid_registered_user_attributes) do
+      attributes_for(
+        :credential, name: 'New Register User', password_confirmation: credential.password, type: 'RegisteredUser'
+      )
     end
 
-    context 'when valid request' do
-      before { post '/signup', params: valid_attributes.to_json, headers: headers }
+    let(:valid_virtual_user_attributes) do
+      attributes_for(
+        :credential, name: 'New Virtual User', type: 'VirtualUser'
+      )
+    end
+
+    let(:invalid_attributes) do
+      attributes_for(:credential, name: nil, password_confirmation: credential.password, type: 'RegisteredUser')
+    end
+
+    context 'when valid RegisteredUser request' do
+      before { post '/signup', params: valid_registered_user_attributes.to_json, headers: headers }
 
       it 'creates a new user' do
         expect(response).to have_http_status(201)
@@ -93,8 +107,20 @@ RSpec.describe 'Users API', type: :request do
       end
     end
 
+    context 'when valid VirtualUser request' do
+      before { post '/signup', params: valid_virtual_user_attributes.to_json, headers: headers }
+
+      it 'creates a new user' do
+        expect(response).to have_http_status(201)
+      end
+
+      it 'returns success message' do
+        expect(json['message']).to match(/Virtual User created/)
+      end
+    end
+
     context 'when invalid request' do
-      before { post '/signup', params: {}, headers: headers }
+      before { post '/signup', params: invalid_attributes.to_json, headers: headers }
 
       it 'does not create a new user' do
         expect(response).to have_http_status(422)
@@ -102,7 +128,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns failure message' do
         expect(json['message'])
-          .to match(/Validation failed: Password can't be blank, Name can't be blank, Email can't be blank, Password digest can't be blank/)
+          .to match(/Validation failed: Name can't be blank/)
       end
     end
   end

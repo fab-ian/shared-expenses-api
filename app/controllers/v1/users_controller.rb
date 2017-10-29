@@ -13,9 +13,19 @@ module V1
     end
 
     def create
-      user = User.create!(user_params)
-      auth_token = AuthenticateUser.new(user.email, user.password).call
-      response = { message: Message.account_created, auth_token: auth_token }
+      if user_params[:type] == 'RegisteredUser'
+        ActiveRecord::Base.transaction do
+          user = RegisteredUser.create!(user_params)
+          @credential = Credential.create!(credential_params.merge(user_id: user.id)) if user
+        end
+
+        auth_token = AuthenticateUser.new(@credential.email, @credential.password).call
+        response = { message: Message.account_created, auth_token: auth_token }
+      else
+        user = VirtualUser.create!(user_params)        
+        response = { message: 'Virtual User created', auth_token: nil }          
+      end
+
       json_response(response, :created)
     end
 
@@ -36,7 +46,11 @@ module V1
     private
 
     def user_params
-      params.permit(:name, :email, :password, :password_confirmation)
+      params.permit(:name, :type)
+    end
+
+    def credential_params
+      params.permit(:email, :password, :password_confirmation)
     end
 
     def set_user

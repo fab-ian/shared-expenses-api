@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025105319) do
+ActiveRecord::Schema.define(version: 20171029121725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "credentials", force: :cascade do |t|
+    t.string "email"
+    t.string "password_digest"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_credentials_on_user_id"
+  end
 
   create_table "item_users", force: :cascade do |t|
     t.bigint "item_id"
@@ -49,10 +58,10 @@ ActiveRecord::Schema.define(version: 20171025105319) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "email"
-    t.string "password_digest"
+    t.string "type"
   end
 
+  add_foreign_key "credentials", "users"
   add_foreign_key "item_users", "items"
   add_foreign_key "item_users", "users"
   add_foreign_key "items", "users"
